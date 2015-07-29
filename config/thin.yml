@@ -1,0 +1,12 @@
+---
+chdir: /opt/app/redmine-3.0.0
+environment: development
+address: 0.0.0.0
+port: 6101
+timeout: 30
+max_conns: 1024
+max_persistent_conns: 100
+require: []
+wait: 30
+servers: 2
+daemonize: true
