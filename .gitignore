@@ -33,8 +33,7 @@
 /tmp/thumbnails/*
 /vendor/cache
 *.rbc
-
 /.bundle
 /Gemfile.lock
 /Gemfile.local
-
+*swp
