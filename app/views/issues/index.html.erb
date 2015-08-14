@@ -51,19 +51,22 @@
                              "$('#query_form').attr('action', '#{ @project ? new_project_query_path(@project) : new_query_path }').submit()",
                              :class => 'icon icon-save' %>
     <% end %>
+    <% if @query.valid? %>
+      <% if @issues.empty? %>
+          <p class="nodata"><%= l(:label_no_data) %></p>
+      <% else %>
+        <p class="pagination" style='float:right'>
+        <%= pagination_links_full @issue_pages, @issue_count %>
+        </p>
+        <%= render :partial => 'issues/list', :locals => {:issues => @issues, :query => @query} %>
+      <% end %>
+    <% end %>
     </p>
   </div>
 <% end %>
 
 <%= error_messages_for 'query' %>
 <% if @query.valid? %>
-<% if @issues.empty? %>
-<p class="nodata"><%= l(:label_no_data) %></p>
-<% else %>
-<%= render :partial => 'issues/list', :locals => {:issues => @issues, :query => @query} %>
-<p class="pagination"><%= pagination_links_full @issue_pages, @issue_count %></p>
-<% end %>
-
 <% other_formats_links do |f| %>
   <%= f.link_to 'Atom', :url => params.merge(:key => User.current.rss_key) %>
   <%= f.link_to 'CSV', :url => params, :onclick => "showModal('csv-export-options', '350px'); return false;" %>
@@ -71,7 +74,7 @@
 <% end %>
 
 <div id="csv-export-options" style="display:none;">
-  <h3 class="title"><%= l(:label_export_options, :export_format => 'CSV') %></h3>  
+  <h3 class="title"><%= l(:label_export_options, :export_format => 'CSV') %></h3>
   <%= form_tag(params.merge({:format => 'csv',:page=>nil}), :method => :get, :id => 'csv-export-form') do %>
   <p>
     <label><%= radio_button_tag 'columns', '', true %> <%= l(:description_selected_columns) %></label><br />
