@@ -34,7 +34,6 @@ module MyHelper
   def issuesassignedtome_items
     Issue.visible.open.
       where(:assigned_to_id => ([User.current.id] + User.current.group_ids)).
-      limit(10).
       includes(:status, :project, :tracker, :priority).
       references(:status, :project, :tracker, :priority).
       order("#{IssuePriority.table_name}.position DESC, #{Issue.table_name}.updated_on DESC").
