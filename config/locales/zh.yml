@@ -500,7 +500,7 @@ zh:
   label_assigned_to_me_issues: 指派给我的问题
   label_last_login: 最后登录
   label_registered_on: 注册于
-  label_activity: 活动
+  label_activity: 工作简报
   label_overall_activity: 活动概览
   label_user_activity: "%{value} 的活动"
   label_new: 新建
