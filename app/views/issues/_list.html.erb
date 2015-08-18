@@ -32,8 +32,9 @@
       </tr>
     <% end %>
   <tr
-    <% if issue.due_date.present? && issue.due_date < Time.now - 7.day && issue.status_id !=3 %>
-      class='red'
+  <% if issue.due_date.present? && issue.due_date < Time.now - 7.day && issue.status_id !=3 %>
+         class='red'
+
     <% end %>
     id="issue-<%= issue.id %>" class="hascontextmenu <%= cycle('odd', 'even') %> <%= issue.css_classes %> <%= level > 0 ? "idnt idnt-#{level}" : nil %>">
     <td><%= index %></td>
@@ -57,3 +58,6 @@ tr.red, tr.red a{
   color: red !important;
 }
 </style>
+<script>
+ $(".red .subject a").append("-------- (一周了)");
+</script>
