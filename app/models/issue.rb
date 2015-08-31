@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Redmine - project management software
 # Copyright (C) 2006-2015  Jean-Philippe Lang
 #
@@ -13,14 +14,36 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 class Issue < ActiveRecord::Base
   include Redmine::SafeAttributes
   include Redmine::Utils::DateCalculation
   include Redmine::I18n
   before_save :set_parent_id
   include Redmine::NestedSet::IssueNestedSet
+
+  after_save do
+    send_message
+  end
+
+  def send_message
+    if User.find_by_id(self.assigned_to_id).phone.present?
+
+      subject = self.subject
+      phone = User.find_by_id(self.assigned_to_id).phone
+      uri = "http://sh2.ipyy.com/sms.aspx"
+      body = {
+            :action  => 'send',
+            :account => 'jkwl077',
+            :password => 'jkwl07733',
+            :userid => '',
+            :mobile => phone,
+            :content => "主题为:" + subject +  "的issue指派给您了,请注意查收。【happy bugs】"
+      }
+      res = HTTParty.post(uri, :body => body )
+      Rails.logger.info("response is #{res}")
+    end
+  end
 
   belongs_to :project
   belongs_to :tracker
@@ -292,7 +315,7 @@ class Issue < ActiveRecord::Base
   # * or if the status was not part of the new tracker statuses
   # * or the status was nil
   def tracker=(tracker)
-    if tracker != self.tracker 
+    if tracker != self.tracker
       if status == default_status
         self.status = nil
       elsif status && tracker && !tracker.issue_status_ids.include?(status.id)
@@ -853,7 +876,6 @@ class Issue < ActiveRecord::Base
   def recipients
     notified_users.collect(&:mail)
   end
-
   def each_notification(users, &block)
     if users.any?
       if custom_field_values.detect {|value| !value.custom_field.visible?}

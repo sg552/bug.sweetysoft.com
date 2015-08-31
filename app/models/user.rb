@@ -542,7 +542,7 @@ class User < Principal
         end
       end
     end
-    
+
     hash.each do |role, projects|
       projects.uniq!
     end
@@ -638,7 +638,8 @@ class User < Principal
     'language',
     'custom_field_values',
     'custom_fields',
-    'identity_url'
+    'identity_url',
+    'phone'
 
   safe_attributes 'status',
     'auth_source_id',
