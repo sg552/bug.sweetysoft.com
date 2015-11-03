@@ -31,16 +31,16 @@ class Issue < ActiveRecord::Base
 
       subject = self.subject
       phone = User.find_by_id(self.assigned_to_id).phone
-      uri = "http://sh2.ipyy.com/sms.aspx"
+      url = "http://sh2.ipyy.com/sms.aspx"
       body = {
             :action  => 'send',
             :account => 'jkwl077',
             :password => 'jkwl07733',
             :userid => '',
             :mobile => phone,
-            :content => "主题为:" + subject +  "的issue指派给您了,请注意查收。【happy bugs】"
+            :content => "请关注" + subject + "，该任务状态发生了变化【Happy Bugs】"
       }
-      res = HTTParty.post(uri, :body => body )
+      res = HTTParty.post(url, :body => body )
       Rails.logger.info("response is #{res}")
     end
   end
