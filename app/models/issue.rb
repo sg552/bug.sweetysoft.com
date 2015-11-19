@@ -38,7 +38,7 @@ class Issue < ActiveRecord::Base
             :password => 'jkwl07733',
             :userid => '',
             :mobile => phone,
-            :content => "请关注" + subject + "，该任务状态发生了变化【Happy Bugs】"
+            :content => "请关注《" + subject + "》该任务状态发生了变化【Happy Bugs】"
       }
       res = HTTParty.post(url, :body => body )
       Rails.logger.info("response is #{res}")
