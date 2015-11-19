@@ -24,10 +24,29 @@ class Issue < ActiveRecord::Base
 
   after_save do
     send_message
+    send_message_to_dashi
   end
 
   def send_message
-    if User.find_by_id(self.assigned_to_id).phone.present?
+    phone = User.find_by_id(self.assigned_to_id).phone
+    if phone.present?
+      subject = self.subject
+      url = "http://sh2.ipyy.com/sms.aspx"
+      body = {
+            :action  => 'send',
+            :account => 'jkwl077',
+            :password => 'jkwl07733',
+            :userid => '',
+            :mobile => phone,
+            :content => "请关注《" + subject + "》该任务状态发生了变化【Happy Bugs】"
+      }
+      res = HTTParty.post(url, :body => body )
+      Rails.logger.info("response is #{res}")
+    end
+  end
+  def send_message_to_dashi
+    dashi_phone = User.find_by_login("shensiwei@happysoft.cc").phone
+    if dashi_phone.present?
 
       subject = self.subject
       phone = User.find_by_id(self.assigned_to_id).phone
@@ -37,7 +56,7 @@ class Issue < ActiveRecord::Base
             :account => 'jkwl077',
             :password => 'jkwl07733',
             :userid => '',
-            :mobile => phone,
+            :mobile => dashi_phone,
             :content => "请关注《" + subject + "》该任务状态发生了变化【Happy Bugs】"
       }
       res = HTTParty.post(url, :body => body )

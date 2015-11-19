@@ -1,4 +1,4 @@
-source 'http://ruby.taobao.org'
+source 'https://ruby.taobao.org'
 
 gem 'thin', '1.6.2'
 gem "rails", "4.2.0"
