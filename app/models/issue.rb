@@ -45,7 +45,7 @@ class Issue < ActiveRecord::Base
     end
   end
   def send_message_to_dashi
-    dashi_phone = User.find_by_login("shensiwei@happysoft.cc").phone
+    dashi_phone = User.find_by_login("shensiwei@uubpay.com").phone
     if dashi_phone.present?
 
       subject = self.subject
