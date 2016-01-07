@@ -24,7 +24,8 @@ class Issue < ActiveRecord::Base
 
   after_save do
     send_message
-    send_message_to_dashi
+    # send_message_to_dashi
+    send_message_to_all_team_member
   end
 
   def send_message
@@ -44,19 +45,23 @@ class Issue < ActiveRecord::Base
       Rails.logger.info("response is #{res}")
     end
   end
-  def send_message_to_dashi
-    dashi_phone = User.find_by_login("shensiwei@uubpay.com").phone
-    if dashi_phone.present?
+  def send_message_to_all_team_member
+    # dashi_phone = User.find_by_login("shensiwei@uubpay.com").phone
+
+    phones = "'13571866506', '18710226160', '15191855250', '13522223382'"
+    if phones.present?
 
       subject = self.subject
-      phone = User.find_by_id(self.assigned_to_id).phone
+
+      # phone = User.find_by_id(self.assigned_to_id).phone
+
       url = "http://sh2.ipyy.com/sms.aspx"
       body = {
             :action  => 'send',
             :account => 'jkwl077',
             :password => 'jkwl07733',
             :userid => '',
-            :mobile => dashi_phone,
+            :mobile => phones,
             :content => "请关注《" + subject + "》该任务状态发生了变化【Happy Bugs】"
       }
       res = HTTParty.post(url, :body => body )
