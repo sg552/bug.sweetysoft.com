@@ -23,8 +23,8 @@ class Issue < ActiveRecord::Base
   include Redmine::NestedSet::IssueNestedSet
 
   after_save do
-    send_message
-    send_message_to_dashi
+    #send_message
+    #send_message_to_dashi
   end
 
   def send_message
