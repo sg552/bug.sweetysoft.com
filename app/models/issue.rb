@@ -23,9 +23,9 @@ class Issue < ActiveRecord::Base
   include Redmine::NestedSet::IssueNestedSet
 
   after_save do
-    send_message
-    # send_message_to_dashi
-    send_message_to_all_team_member
+    #send_message
+    ## send_message_to_dashi
+    #send_message_to_all_team_member
   end
 
   def send_message
