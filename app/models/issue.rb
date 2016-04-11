@@ -24,48 +24,36 @@ class Issue < ActiveRecord::Base
 
   after_save do
     #send_message
-    ## send_message_to_dashi
-    #send_message_to_all_team_member
+  end
+
+  #发送验证码短信
+  def send_sms(phone, token)
   end
 
   def send_message
-    phone = User.find_by_id(self.assigned_to_id).phone
-    if phone.present?
-      subject = self.subject
-      url = "http://sh2.ipyy.com/sms.aspx"
-      body = {
-            :action  => 'send',
-            :account => 'jkwl077',
-            :password => 'jkwl07733',
-            :userid => '',
-            :mobile => phone,
-            :content => "请关注《" + subject + "》该任务状态发生了变化【Happy Bugs】"
-      }
-      res = HTTParty.post(url, :body => body )
-      Rails.logger.info("response is #{res}")
-    end
-  end
-  def send_message_to_all_team_member
-    # dashi_phone = User.find_by_login("shensiwei@uubpay.com").phone
+    url = Settings.sms_url
 
-    phones = "'13571866506', '18710226160', '15191855250', '13522223382'"
-    if phones.present?
-      subject = self.subject
+    body = {
+        :apikey => 'cf1879047c9216b64e5a233eceee0d79',
+        :mobile => User.find_by_id(self.assigned_to_id).phone,
+        :text =>"【#{subject}】您有新任务了. 请登陆bug系统查看。"
+    }
+    res = HTTParty.post(url, :body => body )
 
-      # phone = User.find_by_id(self.assigned_to_id).phone
+    phone =
+    subject = self.subject
 
-      url = "http://sh2.ipyy.com/sms.aspx"
-      body = {
-            :action  => 'send',
-            :account => 'jkwl077',
-            :password => 'jkwl07733',
-            :userid => '',
-            :mobile => phones,
-            :content => "请关注《" + subject + "》该任务状态发生了变化【Happy Bugs】"
-      }
-      res = HTTParty.post(url, :body => body )
-      Rails.logger.info("response is #{res}")
-    end
+    url = "http://sh2.ipyy.com/sms.aspx"
+    body = {
+          :action  => 'send',
+          :account => 'jkwl077',
+          :password => 'jkwl07733',
+          :userid => '',
+          :mobile => phone,
+          :content => "请关注《" + subject + "》该任务状态发生了变化【Happy Bugs】"
+    }
+    res = HTTParty.post(url, :body => body )
+    Rails.logger.info("response is #{res}")
   end
 
   belongs_to :project
