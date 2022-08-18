@@ -23,38 +23,50 @@ class Issue < ActiveRecord::Base
   include Redmine::NestedSet::IssueNestedSet
 
   after_save do
-    #send_message
-  end
-
-  #发送验证码短信
-  def send_sms(phone, token)
+    send_message
   end
 
   def send_message
-    url = Settings.sms_url
-
-    body = {
-        :apikey => 'cf1879047c9216b64e5a233eceee0d79',
-        :mobile => User.find_by_id(self.assigned_to_id).phone,
-        :text =>"【#{subject}】您有新任务了. 请登陆bug系统查看。"
-    }
-    res = HTTParty.post(url, :body => body )
-
-    phone =
-    subject = self.subject
-
-    url = "http://sh2.ipyy.com/sms.aspx"
-    body = {
-          :action  => 'send',
-          :account => 'jkwl077',
-          :password => 'jkwl07733',
-          :userid => '',
+    phone = User.find_by_id(self.assigned_to_id).phone
+    if phone.present?
+      subject = self.subject
+      url="https://sms.yunpian.com/v1/sms/send.json"
+      body = {
+          :apikey => 'dec71e0688f54287ff598e139dc285ff',
           :mobile => phone,
-          :content => "请关注《" + subject + "》该任务状态发生了变化【Happy Bugs】"
-    }
-    res = HTTParty.post(url, :body => body )
-    Rails.logger.info("response is #{res}")
+          :text =>"【明创软件】您有了新任务：#{subject}。"
+      }
+      res = HTTParty.post(url, :body => body )
+      Rails.logger.info("response is #{res}")
+    end
   end
+
+  #def send_message
+  #  url = Settings.sms_url
+
+  #  body = {
+  #      :apikey => 'dec71e0688f54287ff598e139dc285ff',
+  #      :mobile => User.find_by_id(self.assigned_to_id).phone,
+  #      :text =>"【明创软件】您有了新任务：#{subject}"
+  #      #:text =>"【#{subject}】您有新任务了. 请登陆bug系统查看。"
+  #  }
+  #  res = HTTParty.post(url, :body => body )
+
+  #  phone =
+  #  subject = self.subject
+
+  #  url = "http://sh2.ipyy.com/sms.aspx"
+  #  body = {
+  #        :action  => 'send',
+  #        :account => 'jkwl077',
+  #        :password => 'jkwl07733',
+  #        :userid => '',
+  #        :mobile => phone,
+  #        :content => "请关注《" + subject + "》该任务状态发生了变化【Happy Bugs】"
+  #  }
+  #  res = HTTParty.post(url, :body => body )
+  #  Rails.logger.info("response is #{res}")
+  #end
 
   belongs_to :project
   belongs_to :tracker

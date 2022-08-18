@@ -1,8 +1,9 @@
 ---
 chdir: /opt/app/bug.siwei.tech
-environment: production
+environment: development
+#environment: production
 address: 0.0.0.0
-port: 6001
+port: 6000
 timeout: 30
 log: log/thin.log
 pid: tmp/pids/thin.pid
@@ -11,4 +12,5 @@ max_persistent_conns: 100
 require: []
 wait: 30
 servers: 1
-daemonize: true
+#daemonize: true
+daemonize: false

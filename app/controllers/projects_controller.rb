@@ -40,7 +40,7 @@ class ProjectsController < ApplicationController
 
   # Lists visible projects
   def index
-    scope = Project.visible.sorted
+    scope = Project.visible.order(:created_on => :desc)
 
     respond_to do |format|
       format.html {

@@ -32,6 +32,36 @@
 <p><label><%= l(:field_comments) %></label><%= f.text_field :comments, :size => 120 %></p>
 <p><label><%=l(:label_attachment_plural)%></label><%= render :partial => 'attachments/form' %></p>
 </div>
+<script>
+  console.info("===  hihihi, in intercept_paste")
+
+  var pasteEvent = e.originalEvent
+  var item = pasteEvent.clipboardData.items[0];
+  // 仅仅处理粘贴图片,
+  if (item.type.indexOf("image") === 0) {
+    var blob = item.getAsFile();
+
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      image_content = event.target.result
+      // 发现是图片的话，把它上传到CDN上。
+      jQuery.post('/interface/blogs/upload_paste_image_to_cdn', {image_content: image_content}, function( data ) {
+        if(window.wym){
+          window.wym.paste("<img src='" + data.url + "'/>", false)
+        }else{
+          alert("window.wym is undefined, refresh and try again")
+        }
+      });
+
+    };
+    reader.readAsDataURL(blob);
+  }else{
+
+    var wym = WYMeditor.INSTANCES[this.title];
+    wym.format_block();
+    wym.exec(WYMeditor.PASTE);
+  }
+</script>
 
 <p><%= submit_tag l(:button_save) %>
    <%= preview_link({:controller => 'wiki', :action => 'preview', :project_id => @project, :id => @page.title }, 'wiki_form') %></p>
