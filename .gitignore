@@ -38,3 +38,5 @@
 /Gemfile.lock
 /Gemfile.local
 *swp
+*sql
+uploads/*.png
