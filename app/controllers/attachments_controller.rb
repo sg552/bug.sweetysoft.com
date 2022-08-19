@@ -131,6 +131,24 @@ class AttachmentsController < ApplicationController
     end
   end
 
+
+  def upload_image_from_clipboard
+    base_64_encoded_data = params[:image_content]
+
+    unless base_64_encoded_data.include?("data:image/png;base64,")
+      raise "It's not an png image"
+      return
+    end
+
+    local_file = "uploads/#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}.png"
+    File.open(local_file, 'wb') do |f|
+      f.write(Base64.decode64(base_64_encoded_data.gsub("data:image/png;base64,", '')))
+    end
+    render :json => {
+      :url => '/' + local_file,
+    }
+  end
+
   private
 
   def find_attachment

@@ -53,3 +53,26 @@ $(document).ready(function(){
   });
 });
 <% end %>
+
+<script>
+document.onpaste = function(pasteEvent) {
+  var item = pasteEvent.clipboardData.items[0];
+
+  if (item.type.indexOf("image") === 0) {
+    var blob = item.getAsFile();
+
+    var reader = new FileReader();
+
+    // 3. 记得要定义好 onload方法
+    reader.onload = function(event) {
+      // 4. 就可以看到图片的内容了。这个是最最重要的。 
+      jQuery.post('/upload_image_from_clipboard', {image_content: event.target.result}, function( data ) {
+        document.getElementById("issue_description").setRangeText("![](" + data.url + ")")
+      });
+    };
+
+    // 2. 使用这个方法
+    reader.readAsDataURL(blob);
+  }
+}
+</script>

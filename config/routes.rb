@@ -345,6 +345,7 @@ Rails.application.routes.draw do
   match 'sys/fetch_changesets', :to => 'sys#fetch_changesets', :via => [:get, :post]
 
   match 'uploads', :to => 'attachments#upload', :via => :post
+  match 'upload_image_from_clipboard', :to => 'attachments#upload_image_from_clipboard', :via => :post
 
   get 'robots.txt', :to => 'welcome#robots'
 
