@@ -1,7 +1,7 @@
 ---
 chdir: /opt/app/bug.siwei.tech
-environment: development
-#environment: production
+#environment: development
+environment: production
 address: 0.0.0.0
 port: 6000
 timeout: 30

@@ -1,1 +1,5 @@
 Redmine 在happysoft 的定制版.
+
+ruby 1.9.3
+bundler 1.10.6
+mysql 5.7

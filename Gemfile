@@ -1,7 +1,9 @@
-source 'https://ruby.taobao.org'
+#source 'https://ruby.taobao.org'
+source 'https://rubygems.org'
 
+gem 'json', '1.8.6'
 gem 'thin', '1.6.2'
-gem "rails", "4.2.0"
+gem "rails", "4.2.10"
 gem "jquery-rails", "~> 3.1.1"
 gem "coderay", "~> 1.1.0"
 gem "builder", ">= 3.0.4"
@@ -57,7 +59,7 @@ if File.exist?(database_file)
     adapters.each do |adapter|
       case adapter
       when 'mysql2'
-        gem "mysql2", "~> 0.3.11", :platforms => [:mri, :mingw, :x64_mingw]
+        gem "mysql2", "0.4.10", :platforms => [:mri, :mingw, :x64_mingw]
         gem "activerecord-jdbcmysql-adapter", :platforms => :jruby
       when 'mysql'
         gem "activerecord-jdbcmysql-adapter", :platforms => :jruby
@@ -92,6 +94,7 @@ group :test do
   gem "mocha"
   gem "simplecov", "~> 0.9.1", :require => false
   # For running UI tests
+  gem 'loofah', '~>2.19.1'
   gem "capybara"
   gem "selenium-webdriver"
 end
