@@ -1,50 +1,45 @@
 #source 'https://ruby.taobao.org'
 source 'https://rubygems.org'
 
-gem 'json', '1.8.6'
 gem 'thin', '1.6.2'
-gem "rails", "4.2.10"
-gem "jquery-rails", "~> 3.1.1"
-gem "coderay", "~> 1.1.0"
-gem "builder", ">= 3.0.4"
+gem "rails", "4.2.0"
+gem "jquery-rails", "3.1.4"
+gem "coderay", "1.1.0"
+gem "builder", "3.2.2"
 gem "request_store", "1.0.5"
-gem "mime-types"
-gem "protected_attributes"
-gem "actionpack-action_caching"
-gem "actionpack-xml_parser"
+gem "mime-types", '2.6.2'
+gem "protected_attributes", '1.1.3'
+gem "actionpack-action_caching", '1.1.1'
+gem "actionpack-xml_parser", '1.0.2'
+
+gem 'rack', '1.6.4'
 
 gem 'httparty', '0.13.5'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :x64_mingw, :mswin, :jruby]
-gem "rbpdf", "~> 1.18.5"
+gem "rbpdf", "1.18.6"
 
 # Optional gem for LDAP authentication
 group :ldap do
-  gem "net-ldap", "~> 0.3.1"
+  gem "net-ldap", "0.3.1"
 end
 
 # Optional gem for OpenID authentication
 group :openid do
-  gem "ruby-openid", "~> 2.3.0", :require => "openid"
-  gem "rack-openid"
+  gem "ruby-openid", "2.3.0", :require => "openid"
+  gem "rack-openid", '1.4.2'
 end
 
 platforms :mri, :mingw, :x64_mingw do
   # Optional gem for exporting the gantt to a PNG file, not supported with jruby
   group :rmagick do
-    gem "rmagick", ">= 2.0.0"
+    gem "rmagick", "2.15.4"
   end
 
   # Optional Markdown support, not for JRuby
   group :markdown do
-    gem "redcarpet", "~> 3.1.2"
+    gem "redcarpet", "3.1.2"
   end
-end
-
-platforms :jruby do
-  # jruby-openssl is bundled with JRuby 1.7.0
-  gem "jruby-openssl" if Object.const_defined?(:JRUBY_VERSION) && JRUBY_VERSION < '1.7.0'
-  gem "activerecord-jdbc-adapter", "~> 1.3.2"
 end
 
 # Include database gems for the adapters found in the database
@@ -59,19 +54,7 @@ if File.exist?(database_file)
     adapters.each do |adapter|
       case adapter
       when 'mysql2'
-        gem "mysql2", "0.4.10", :platforms => [:mri, :mingw, :x64_mingw]
-        gem "activerecord-jdbcmysql-adapter", :platforms => :jruby
-      when 'mysql'
-        gem "activerecord-jdbcmysql-adapter", :platforms => :jruby
-      when /postgresql/
-        gem "pg", "~> 0.17.1", :platforms => [:mri, :mingw, :x64_mingw]
-        gem "activerecord-jdbcpostgresql-adapter", :platforms => :jruby
-      when /sqlite3/
-        gem "sqlite3", :platforms => [:mri, :mingw, :x64_mingw]
-        gem "activerecord-jdbcsqlite3-adapter", "1.3.11", :platforms => :jruby
-      when /sqlserver/
-        gem "tiny_tds", "~> 0.6.2", :platforms => [:mri, :mingw, :x64_mingw]
-        gem "activerecord-sqlserver-adapter", :platforms => [:mri, :mingw, :x64_mingw]
+        gem "mysql2", "0.3.20", :platforms => [:mri, :mingw, :x64_mingw]
       else
         warn("Unknown database adapter `#{adapter}` found in config/database.yml, use Gemfile.local to load your own database gems")
       end
@@ -84,19 +67,18 @@ else
 end
 
 group :development do
-  gem "rdoc", ">= 2.4.2"
-  gem "yard"
+  gem "rdoc", "4.2.0"
+  gem "yard", '0.8.7.6'
 end
 
 group :test do
-  gem "minitest"
-  gem "rails-dom-testing"
-  gem "mocha"
-  gem "simplecov", "~> 0.9.1", :require => false
+  gem "minitest", '5.8.1'
+  gem "rails-dom-testing", '1.0.7'
+  gem "mocha", '1.1.0'
+  gem "simplecov", "0.9.2", :require => false
   # For running UI tests
-  gem 'loofah', '~>2.19.1'
-  gem "capybara"
-  gem "selenium-webdriver"
+  gem "capybara", '2.5.0'
+  gem "selenium-webdriver", '2.48.0'
 end
 
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")
