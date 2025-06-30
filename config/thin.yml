@@ -1,9 +1,9 @@
 ---
-chdir: /opt/app/bug.siwei.tech
+chdir: /opt/app/
 environment: development
 #environment: production
 address: 0.0.0.0
-port: 6000
+port: 3000
 timeout: 30
 log: log/thin.log
 pid: tmp/pids/thin.pid
