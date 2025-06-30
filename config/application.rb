@@ -16,6 +16,7 @@ module RedmineApp
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
+    config.plugins = [ :ssl_requirement ]
 
     config.active_record.store_full_sti_class = true
     config.active_record.default_timezone = :local
@@ -37,7 +38,7 @@ module RedmineApp
     config.filter_parameters += [:password]
 
     # Enable the asset pipeline
-    config.assets.enabled = false
+    config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
@@ -64,5 +65,11 @@ module RedmineApp
     if File.exists?(File.join(File.dirname(__FILE__), 'additional_environment.rb'))
       instance_eval File.read(File.join(File.dirname(__FILE__), 'additional_environment.rb'))
     end
+
+    # 映射 /uploads 到项目根目录下的 uploads 文件夹
+    config.middleware.insert_after(ActionDispatch::Static, Rack::Static,
+                                   urls: ["/uploads"],
+                                   root: Rails.root.to_s
+                                  )
   end
 end
